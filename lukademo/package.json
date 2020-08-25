@@ -1,0 +1,21 @@
+{
+  "name": "lukademo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "nodemon ./dist/index.js",
+    "start": "tsc -w ./src/index.ts",
+    "dev": "concurrently  \" npm run build\"  \"npm run start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/concurrently": "^5.2.1",
+    "@types/express": "^4.17.6",
+    "concurrently": "^5.2.0",
+    "express": "^4.17.1"
+  }
+}

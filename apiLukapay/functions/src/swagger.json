@@ -1,0 +1,245 @@
+
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Api Rest Lukapay",
+        "description": "C'est une Api pour le système de paiement lukapay",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "x-google-backend":{
+      "address": "https://us-central1-deux-e42ba.cloudfunctions.net/http/"
+    },
+    "servers": [
+        {
+          "url": "https://us-central1-apitest-edb81.cloudfunctions.net/api/"
+        },
+        {
+          "url": "http://localhost:5001/apitest-edb81/us-central1/api/"
+        }
+      ],
+    "paths": {
+      
+        "/users": {
+            "get": {
+                "summary": "Obtenir quelques Users",
+                "description": "Renvoie une liste contenant tous les Users.",
+                "responses": {
+                    "200": {
+                        "description": "La liste des Users",
+                        "schema": {
+                          "type": "array",
+                          "items": {
+                              "properties": {
+                                  "userName": {
+                                      "type": "string"
+                                  },
+                                  "phoneNumber": {
+                                      "type": "string"
+                                  },
+                                  "email": {
+                                      "type": "string"
+                                  }
+                              }
+                          }
+                      }
+
+                    }
+                }
+            },
+            "post": {
+              "summary": "Ajouter quelques Users",
+              "operationId": "addUser",
+              "requestBody": {
+                "description": "ajouter un User dans l'api",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  },
+                  "application/xml": {
+                    "schema": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                },
+                "required": true
+              },
+              "responses": {
+                "405": {
+                  "description": "Invalid input",
+                  "content": {}
+                }
+              },
+              "x-codegen-request-body-name": "body"
+            }
+            
+        },
+        "/users/{UserId}": {
+          "get": {
+            "summary": "Recuperer un User",
+            "operationId": "getUserById",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "La recherche d'un User par rapport à l'Id",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "successful operation",
+                "content": {
+                  "application/xml": {
+                    "schema": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  },
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Invalid username supplied",
+                "content": {}
+              },
+              "404": {
+                "description": "User not found",
+                "content": {}
+              }
+            }
+          },
+          "put": {
+            "summary": "Modifier quelques Users",
+            "description": "Modifier un User",
+            "operationId": "updateUser",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Modifier un User",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "requestBody": {
+              "description": "Modifier un object",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              },
+              "required": true
+            },
+            "responses": {
+              "400": {
+                "description": "Invalid user supplied",
+                "content": {}
+              },
+              "404": {
+                "description": "User not found",
+                "content": {}
+              }
+            },
+            "x-codegen-request-body-name": "body"
+          },
+          "delete": {
+            "summary": "Supprimer quelques Users",
+            "description": "La suppression du User par rapport a l'Id.",
+            "operationId": "deleteUser",
+            "parameters": [
+              {
+                "name": "Id",
+                "in": "path",
+                "description": "Supprimer un conatact par rapport a l'id",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "400": {
+                "description": "Invalid Id supplied",
+                "content": {}
+              },
+              "404": {
+                "description": "User not found",
+                "content": {}
+              }
+            }
+          }
+        }
+        
+    },
+    "components": {
+      "schemas": {
+         "Id": {
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            }
+          },
+          "xml": {
+            "name": "uuid"
+          }
+        }, 
+        "User": {
+          "type": "object",
+          "properties": {
+            "nom": {
+              "type": "string"
+            },
+              "photo":{
+              "type":"string"
+            },
+              "localisation":{
+              "type":"string"              
+            },
+            "deviceMark":{
+              "type":"string"
+            },
+            "osVersion":{
+              "type":"string"
+            },
+            "deviceSerial":{
+              "type":"string"
+            },
+            "deviceRegistration":{
+              "type": "string"
+            }
+          },
+          "xml": {
+            "name": "Users"
+          }
+        },
+        "Users": {
+          "type": "object",
+          "properties": {
+              "Users":{
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/components/schemas/User"
+                  }
+              }
+          }
+        }
+      }
+    }
+}

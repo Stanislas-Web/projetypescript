@@ -1,0 +1,228 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Api Rest Contacts users",
+        "description": "C'est une Api pour gerer les contacts des utilisateurs",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "x-google-backend": {
+        "address": "https://us-central1-deux-e42ba.cloudfunctions.net/http/"
+    },
+    "servers": [
+        {
+            "url": "https://us-central1-deux-e42ba.cloudfunctions.net/http"
+        },
+        {
+            "url": "http://localhost:5001/deux-e42ba/us-central1/http"
+        }
+    ],
+    "paths": {
+        "/contacts": {
+            "get": {
+                "summary": "Obtenir quelques Contacts",
+                "description": "Renvoie une liste contenant tous les contacts.",
+                "responses": {
+                    "200": {
+                        "description": "La liste des contacts",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "phoneNumber": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Ajouter quelques contacts",
+                "operationId": "addContact",
+                "requestBody": {
+                    "description": "ajouter un contact dans l'api",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Contact"
+                            }
+                        },
+                        "application/xml": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Contact"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "405": {
+                        "description": "Invalid input",
+                        "content": {}
+                    }
+                },
+                "x-codegen-request-body-name": "body"
+            }
+        },
+        "/contacts/{contactId}": {
+            "get": {
+                "summary": "Recuperer un contact",
+                "operationId": "getContactById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "La recherche d'un contact par rapport à l'Id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contact"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contact"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid username supplied",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {}
+                    }
+                }
+            },
+            "put": {
+                "summary": "Modifier quelques contacts",
+                "description": "Modifier un contact",
+                "operationId": "updateContact",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Modifier un contact",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Modifier un object",
+                    "content": {
+                        "*/*": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Contact"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "400": {
+                        "description": "Invalid user supplied",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {}
+                    }
+                },
+                "x-codegen-request-body-name": "body"
+            },
+            "delete": {
+                "summary": "Supprimer quelques contacts",
+                "description": "La suppression du contact par rapport a l'Id.",
+                "operationId": "deleteContact",
+                "parameters": [
+                    {
+                        "name": "Id",
+                        "in": "path",
+                        "description": "Supprimer un conatact par rapport a l'id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid Id supplied",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Contact not found",
+                        "content": {}
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Id": {
+                "type": "object",
+                "properties": {
+                    "uuid": {
+                        "type": "string"
+                    }
+                },
+                "xml": {
+                    "name": "uuid"
+                }
+            },
+            "Contact": {
+                "type": "object",
+                "properties": {
+                    "userName": {
+                        "type": "string"
+                    },
+                    "phoneNumber": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "xml": {
+                    "name": "contacts"
+                }
+            },
+            "Contacts": {
+                "type": "object",
+                "properties": {
+                    "contacts": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/Contact"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
